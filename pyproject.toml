@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "contract-negotiation-openenv"
+version = "0.1.0"
+description = "OpenEnv contract negotiation environment with adversarial clause traps."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "openenv-core",
+    "pydantic>=2.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["contract_negotiation_env*"]

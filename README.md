@@ -1,0 +1,36 @@
+# Contract Negotiation OpenEnv Environment
+
+An OpenEnv reinforcement learning environment where an AI acts as a legal reviewer. The agent analyzes contracts, identifies hidden unfair clauses ("traps"), negotiates changes with an adversarial counterparty, and sequentially decides whether to accept, counter, or walk away.
+
+## Why Contract Negotiation?
+- **Novelty:** Legal contract review is far less generic than traditional cybersecurity or navigation environments.
+- **Deep Reasoning:** Requires the agent to first investigate text before making blind proposals.
+- **Rich Assessment:** Evaluates on trap detection, actual amendment quality, negotiation efficiency, fairness of outcome, and strategic walk-away logic.
+
+## Quickstart
+
+```bash
+python -m venv .venv
+# Activate the environment
+# Windows: .venv\Scripts\activate
+# Unix: source .venv/bin/activate
+pip install -r requirements.txt
+
+# Run main interactive demo
+python demo_run.py
+
+# Showcase targeted risk-aware strategy
+python showcase_run.py
+
+# Run unit tests and generate the benchmark artifact
+python run_all.py
+```
+
+## Structure
+- `contract_negotiation_env/`: Core OpenEnv RL implementation, models, grader, and the procedural contract generation tools.
+- `tests/`: Deterministic testing suites for the grader, generators, and environment.
+- `SUBMISSION.md`: Full background, problem framing, and evaluation details for the hackathon.
+- `RESULTS.md`: Benchmark results on various difficulty setups.
+- `DEPLOYMENT.md`: Instructions for Docker images and Hugging Face deployment.
+
+Happy hacking!
