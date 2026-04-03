@@ -5,11 +5,79 @@ Defines what an agent can do (Action), what it sees (Observation),
 and the hidden ground truth (State).
 """
 
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from enum import Enum
 
 from openenv.core.env_server import Action, Observation, State
 from pydantic import Field
+
+
+# ── amendment types ──────────────────────────────────────────────────
+
+class AmendmentType(str, Enum):
+    """Structured amendment categories for contract negotiation."""
+
+    FAIRNESS_IMPROVEMENT = "fairness_improvement"  # Make clause more balanced
+    MODIFY_PAYMENT_TERMS = "modify_payment_terms"  # Change payment schedule/amount
+    MODIFY_LIABILITY_CAP = "modify_liability_cap"  # Set liability ceiling
+    MODIFY_DURATION = "modify_duration"  # Change term length
+    ADD_PROTECTIVE_CLAUSE = "add_protective_clause"  # Insert new safeguard
+    REMOVE_CLAUSE = "remove_clause"  # Delete problematic clause
+    MODIFY_TERMINATION = "modify_termination"  # Change exit terms
+    MODIFY_NON_COMPETE = "modify_non_compete"  # Narrow non-compete scope
+    MODIFY_IP_RIGHTS = "modify_ip_rights"  # Clarify IP ownership
+    LIMIT_AUTO_RENEWAL = "limit_auto_renewal"  # Add exit window for auto-renew
+
+
+class Amendment(Action):
+    """
+    Structured amendment to a contract clause.
+    
+    Replaces free-text proposals with semantically meaningful changes.
+    """
+
+    amendment_type: AmendmentType
+    clause_idx: int
+    parameters: Dict[str, Any] = Field(default_factory=dict)
+    rationale: str = ""  # Brief explanation for clarity
+    
+    def validate(self) -> bool:
+        """Basic semantic validation of the amendment."""
+        # Validate parameters based on amendment type
+        params = self.parameters
+        
+        if self.amendment_type == AmendmentType.MODIFY_PAYMENT_TERMS:
+            # Must have payment_days or payment_amount
+            return "payment_days" in params or "payment_amount" in params
+        
+        elif self.amendment_type == AmendmentType.MODIFY_LIABILITY_CAP:
+            # Must specify cap amount or percentage
+            return "cap_amount" in params or "cap_percentage" in params
+        
+        elif self.amendment_type == AmendmentType.MODIFY_DURATION:
+            # Must specify duration in months/years
+            return "duration_months" in params or "duration_years" in params
+        
+        elif self.amendment_type == AmendmentType.MODIFY_NON_COMPETE:
+            # Must specify duration and/or scope
+            return ("duration_months" in params or "scope" in params)
+        
+        elif self.amendment_type == AmendmentType.LIMIT_AUTO_RENEWAL:
+            # Must specify notice period
+            return "advance_notice_days" in params
+        
+        # Other amendment types don't require strict validation
+        return True
+    
+    def to_brief_text(self) -> str:
+        """Convert amendment to brief natural language for counterparty."""
+        base = f"{self.amendment_type.value.replace('_', ' ').title()}"
+        
+        if self.parameters:
+            params_str = ", ".join(f"{k}={v}" for k, v in self.parameters.items())
+            return f"{base} ({params_str})"
+        
+        return base
 
 
 # ── action types the agent can pick ──────────────────────────────────
@@ -31,13 +99,15 @@ class NegotiationAction(Action):
     A single move in the negotiation episode.
 
     The agent specifies *what* it wants to do (move_kind), which clause
-    it targets (clause_idx, zero-based), and optional free-text for
-    proposals or counter-offers.
+    it targets (clause_idx, zero-based), and optionally a structured
+    amendment or free-text proposal for backward compatibility.
     """
 
     move_kind: MoveKind
     clause_idx: int = 0
-    proposal_text: str = ""
+    proposal_text: str = ""  # Legacy: free-text proposals (still supported)
+    amendment: Optional[Amendment] = None  # New: structured amendments
+
 
 
 # ── what the agent sees back ─────────────────────────────────────────

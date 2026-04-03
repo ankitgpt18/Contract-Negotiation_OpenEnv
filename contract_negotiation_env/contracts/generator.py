@@ -30,7 +30,7 @@ COUNTERPARTY_WEIGHTS = {
     "hard": ["neutral", "adversarial", "adversarial"],
 }
 
-CONTRACT_TYPES = ["freelance", "lease", "vendor"]
+CONTRACT_TYPES = ["freelance", "lease", "vendor", "saas", "ma", "ip_license", "employment"]
 
 SCENARIO_PROFILES = {
     # Balanced baseline for quick evaluation runs.
@@ -55,6 +55,42 @@ SCENARIO_PROFILES = {
     "procurement_redteam": {
         "difficulty": "hard",
         "contract_type": "vendor",
+        "counterparty_bias": "adversarial",
+    },
+    # SaaS contract focus - medium difficulty with neutral counterparty.
+    "saas_moderate": {
+        "difficulty": "medium",
+        "contract_type": "saas",
+        "counterparty_bias": "neutral",
+    },
+    # SaaS contract focus - hard difficulty with adversarial counterparty.
+    "saas_hardened": {
+        "difficulty": "hard",
+        "contract_type": "saas",
+        "counterparty_bias": "adversarial",
+    },
+    # M&A contract - high stakes, complex traps.
+    "ma_complex": {
+        "difficulty": "hard",
+        "contract_type": "ma",
+        "counterparty_bias": "adversarial",
+    },
+    # IP Licensing - traps focused on usage restrictions.
+    "ip_licensing_strict": {
+        "difficulty": "medium",
+        "contract_type": "ip_license",
+        "counterparty_bias": "neutral",
+    },
+    # Employment contracts - worker protection tests.
+    "employment_fair": {
+        "difficulty": "medium",
+        "contract_type": "employment",
+        "counterparty_bias": "cooperative",
+    },
+    # Employment contracts - adversarial employer.
+    "employment_hostile": {
+        "difficulty": "hard",
+        "contract_type": "employment",
         "counterparty_bias": "adversarial",
     },
 }

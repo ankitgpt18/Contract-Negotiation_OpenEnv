@@ -1,35 +1,36 @@
 from contract_negotiation_env.client import NegotiationEnv
-from contract_negotiation_env.models import NegotiationAction, MoveKind
+from contract_negotiation_env.policies import TrapAwarePolicy
 
 
 def run_demo():
+    """
+    Demo: Agent uses TrapAwarePolicy to autonomously:
+    1. Analyze clauses for traps
+    2. Target detected traps with structured amendments
+    3. Learn from counterparty responses
+    
+    """
     env = NegotiationEnv()
-    obs = env.reset(seed=42, difficulty="hard")
+    policy = TrapAwarePolicy()
+    obs = env.reset(seed=42, scenario_profile="hard")
     print("START:", obs.message)
+    done = False
 
-    # Investigate first three clauses.
-    for i in range(min(3, len(obs.clauses))):
-        obs = env.step(NegotiationAction(move_kind=MoveKind.READ_CLAUSE, clause_idx=i))
-        print(f"\nREAD {i}:", obs.risk_report or obs.message)
-        obs = env.step(NegotiationAction(move_kind=MoveKind.ASSESS_RISK, clause_idx=i))
-        print(f"ASSESS {i}:", obs.risk_report or obs.message)
+    while not done:
+        # Policy intelligently chooses next action (analyze, propose, etc.)
+        action = policy.act(obs)
+        obs = env.step(action)
+        print(f"ACTION={action.move_kind.value} cidx={action.clause_idx}")
+        # Show amendment details if present
+        if action.amendment:
+            print(f"  → Amendment: type={action.amendment.amendment_type.value}, params={action.amendment.parameters}")
+        if obs.risk_report:
+            print("RISK:", obs.risk_report)
+        if obs.counterparty_response:
+            print("COUNTERPARTY:", obs.counterparty_response)
+        if obs.done:
+            done = True
 
-    # Attempt one concrete amendment.
-    obs = env.step(
-        NegotiationAction(
-            move_kind=MoveKind.PROPOSE_CHANGE,
-            clause_idx=0,
-            proposal_text=(
-                "This clause appears one-sided and creates asymmetric risk. "
-                "Please revise with mutual obligations, capped liability, and "
-                "explicit notice requirements."
-            ),
-        )
-    )
-    print("\nNEGOTIATION:", obs.counterparty_response or obs.message)
-
-    # Close episode.
-    obs = env.step(NegotiationAction(move_kind=MoveKind.ACCEPT_TERMS, clause_idx=0))
     print("\nFINAL MESSAGE:", obs.message)
     print("FINAL REWARD:", obs.reward)
     print("SCORE BREAKDOWN:", obs.score_breakdown)

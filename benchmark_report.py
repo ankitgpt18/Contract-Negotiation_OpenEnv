@@ -8,7 +8,18 @@ from contract_negotiation_env.models import MoveKind, NegotiationAction
 from contract_negotiation_env.policies import TrapAwarePolicy
 
 
-PROFILES = ["baseline", "cooperative_bootcamp", "adversarial_finals", "procurement_redteam"]
+PROFILES = [
+    "baseline",
+    "cooperative_bootcamp",
+    "adversarial_finals",
+    "procurement_redteam",
+    "saas_moderate",
+    "saas_hardened",
+    "ma_complex",
+    "ip_licensing_strict",
+    "employment_fair",
+    "employment_hostile",
+]
 POLICIES = ["random", "no_analysis", "targeted_heuristic"]
 
 

@@ -93,6 +93,7 @@ class NegotiationEnvironment(Environment):
             style=cpstyle,
             concession_budget=1.0,
             seed=seed,
+            learning_enabled=True,  # Enable learning/adaptation
         )
         self._action_log = []
         self._detected = []
@@ -161,6 +162,7 @@ class NegotiationEnvironment(Environment):
         move = action.move_kind
         cidx = action.clause_idx
         proposal = action.proposal_text
+        amendment = action.amendment
 
         # log it
         log_entry = {
@@ -168,6 +170,7 @@ class NegotiationEnvironment(Environment):
             "move_kind": move.value if isinstance(move, MoveKind) else move,
             "clause_idx": cidx,
             "proposal_text": proposal,
+            "amendment": amendment.to_brief_text() if amendment else None,
             "result": "",
         }
 
@@ -177,9 +180,9 @@ class NegotiationEnvironment(Environment):
         elif move == MoveKind.ASSESS_RISK:
             obs = self._handle_assess_risk(cidx, log_entry)
         elif move == MoveKind.PROPOSE_CHANGE:
-            obs = self._handle_propose_change(cidx, proposal, log_entry)
+            obs = self._handle_propose_change(cidx, proposal, amendment, log_entry)
         elif move == MoveKind.COUNTER_OFFER:
-            obs = self._handle_counter_offer(cidx, proposal, log_entry)
+            obs = self._handle_counter_offer(cidx, proposal, amendment, log_entry)
         elif move == MoveKind.ACCEPT_TERMS:
             obs = self._handle_accept(log_entry)
         elif move == MoveKind.REJECT_TERMS:
@@ -277,7 +280,7 @@ class NegotiationEnvironment(Environment):
             risk_report=risk_text,
         )
 
-    def _handle_propose_change(self, cidx, proposal, log_entry):
+    def _handle_propose_change(self, cidx, proposal, amendment, log_entry):
         if self._phase == "analysis":
             self._phase = "negotiation"
 
@@ -298,7 +301,7 @@ class NegotiationEnvironment(Environment):
 
         outcome, msg, updated_clauses, updated_traps = (
             self._counterparty.respond_to_proposal(
-                cidx, proposal, clause, self._clauses, self._traps
+                cidx, proposal, amendment, clause, self._clauses, self._traps
             )
         )
 
@@ -314,7 +317,7 @@ class NegotiationEnvironment(Environment):
             counterparty_response=msg,
         )
 
-    def _handle_counter_offer(self, cidx, proposal, log_entry):
+    def _handle_counter_offer(self, cidx, proposal, amendment, log_entry):
         if self._phase == "analysis":
             self._phase = "negotiation"
 
@@ -333,7 +336,7 @@ class NegotiationEnvironment(Environment):
 
         outcome, msg, updated_clauses, updated_traps = (
             self._counterparty.respond_to_counter_offer(
-                cidx, proposal, clause, self._clauses, self._traps
+                cidx, proposal, amendment, clause, self._clauses, self._traps
             )
         )
 
@@ -371,8 +374,11 @@ class NegotiationEnvironment(Environment):
         llm_eval = evaluate_episode(
             self._action_log, self._traps, self._detected
         )
+        
+        # Include what the counterparty learned about the agent
+        counterparty_insights = self._counterparty.get_learned_insights()
 
-        self._final_scores = {**scores, "llm_evaluation": llm_eval}
+        self._final_scores = {**scores, "llm_evaluation": llm_eval, "counterparty_learned": counterparty_insights}
 
         log_entry["result"] = f"Accepted.  Reward: {scores['total_reward']}"
 
@@ -400,7 +406,8 @@ class NegotiationEnvironment(Environment):
         llm_eval = evaluate_episode(
             self._action_log, self._traps, self._detected
         )
-        self._final_scores = {**scores, "llm_evaluation": llm_eval}
+        counterparty_insights = self._counterparty.get_learned_insights()
+        self._final_scores = {**scores, "llm_evaluation": llm_eval, "counterparty_learned": counterparty_insights}
 
         log_entry["result"] = f"Rejected.  Reward: {scores['total_reward']}"
 
@@ -426,7 +433,8 @@ class NegotiationEnvironment(Environment):
         llm_eval = evaluate_episode(
             self._action_log, self._traps, self._detected
         )
-        self._final_scores = {**scores, "llm_evaluation": llm_eval}
+        counterparty_insights = self._counterparty.get_learned_insights()
+        self._final_scores = {**scores, "llm_evaluation": llm_eval, "counterparty_learned": counterparty_insights}
 
         log_entry["result"] = f"Walked away.  Reward: {scores['total_reward']}"
 

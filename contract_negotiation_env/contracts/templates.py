@@ -154,6 +154,145 @@ TRAP_CATALOGUE = {
             "proceedings in a location convenient to both parties."
         ),
     },
+    "data_monetization": {
+        "severity": 0.88,
+        "text": (
+            "The Provider reserves the right to anonymize and aggregate Customer "
+            "data for internal analytics and research purposes.  The Provider may "
+            "share this data with third-party partners and vendors for commercial purposes."
+        ),
+        "why_bad": (
+            "Provider can monetize customer data without explicit consent or benefit "
+            "sharing — effectively using customer data as a product."
+        ),
+        "fair_version": (
+            "Customer data shall not be used for any purpose beyond providing the "
+            "contracted services without explicit prior written consent.  Anonymized "
+            "usage statistics may be retained for service improvement."
+        ),
+    },
+    "unilateral_price_increase": {
+        "severity": 0.82,
+        "text": (
+            "The Provider may increase subscription fees at any time with written "
+            "notice to the Customer.  Continued use of the platform constitutes "
+            "acceptance of the new pricing."
+        ),
+        "why_bad": (
+            "Provider can raise prices unilaterally with no cap or renewal anchor, "
+            "forcing customers to accept or leave."
+        ),
+        "fair_version": (
+            "Pricing changes apply only upon renewal of the subscription term.  "
+            "The Provider shall provide ninety (90) days' notice of any price increases "
+            "exceeding five percent (5%%) per annum."
+        ),
+    },
+    "indemnity_overreach": {
+        "severity": 0.78,
+        "text": (
+            "The Buyer shall indemnify the Seller against any claim, loss, or "
+            "liability arising from any event occurring before, during, or after "
+            "the closing of the transaction, including unforeseeable future claims."
+        ),
+        "why_bad": (
+            "Indemnification window is unlimited in time and scope — the Seller "
+            "has perpetual protection while the Buyer carries unlimited risk."
+        ),
+        "fair_version": (
+            "Each party shall indemnify the other against breaches of representations "
+            "and warranties for a period of eighteen (18) months post-closing, "
+            "subject to a materiality threshold of fifty thousand dollars ($50,000)."
+        ),
+    },
+    "escrow_forfeiture": {
+        "severity": 0.80,
+        "text": (
+            "Any funds remaining in escrow at the end of the holdback period that "
+            "have not been claimed shall be forfeited to the Seller.  No funds "
+            "shall be released to the Buyer under any circumstances."
+        ),
+        "why_bad": (
+            "Escrow structure is one-sided — unfair claims are forfeited to the "
+            "Seller rather than returned to the Buyer."
+        ),
+        "fair_version": (
+            "Any unclaimed escrow funds remaining at the end of the holdback period "
+            "shall be returned to the Buyer.  The Seller may submit indemnification "
+            "claims within thirty (30) days before the release."
+        ),
+    },
+    "license_clawback": {
+        "severity": 0.85,
+        "text": (
+            "The Licensor retains the right to terminate this license at any time "
+            "without cause and without refund.  Upon termination, all licensed "
+            "materials must be destroyed immediately and all existing products "
+            "must be removed from distribution."
+        ),
+        "why_bad": (
+            "Licensor can revoke license unilaterally, destroying the Licensee's "
+            "entire business with no recourse or wind-down period."
+        ),
+        "fair_version": (
+            "Either party may terminate for material breach with ninety (90) days' "
+            "cure period.  Upon termination without cause, the Licensee has one hundred "
+            "eighty (180) days to wind down existing products and sell remaining inventory."
+        ),
+    },
+    "field_of_use_restriction": {
+        "severity": 0.72,
+        "text": (
+            "The licensed IP may only be used in the exact field of use specified "
+            "in Exhibit A.  Any deviation or extension of use requires renegotiation "
+            "of the license terms and additional fees determined at the Licensor's sole discretion."
+        ),
+        "why_bad": (
+            "Overly restrictive field-of-use clause limits licensee's business "
+            "flexibility and gives licensor unilateral pricing power for expansions."
+        ),
+        "fair_version": (
+            "The licensed IP may be used in [specified field] and reasonable extensions "
+            "thereof.  Significant new applications require mutual written agreement, "
+            "with pricing to be determined in good faith within thirty (30) days."
+        ),
+    },
+    "non_compete_employment": {
+        "severity": 0.75,
+        "text": (
+            "During employment and for three (3) years following termination, "
+            "the Employee shall not engage in any business substantially similar "
+            "to the Employer's, including consulting, employment, or board service "
+            "with any competitor in any geographic location."
+        ),
+        "why_bad": (
+            "Three-year global non-compete is excessively broad and likely "
+            "unenforceable, but creates a chilling effect on any future opportunity."
+        ),
+        "fair_version": (
+            "For six (6) months following voluntary termination, the Employee shall "
+            "not solicit the Employer's customers known to the Employee.  Geographic "
+            "and role restrictions are limited to the Employee's last assigned territory."
+        ),
+    },
+    "wage_clawback": {
+        "severity": 0.88,
+        "text": (
+            "If the Employee engages in any corporate malfeasance, misuse of company "
+            "assets, or violation of any company policy at any time during employment, "
+            "the Employer may recover all compensation paid, including salary, bonuses, "
+            "and benefits, for the preceding twelve (12) months."
+        ),
+        "why_bad": (
+            "Retroactive clawback of all compensation for vague violations leaves "
+            "employee exposed to financial ruin for minor infractions."
+        ),
+        "fair_version": (
+            "Gross negligence or deliberate policy violations may result in forfeiture "
+            "of the current month's bonus only, subject to written notice and ten (10) "
+            "business days for the Employee to cure or dispute."
+        ),
+    },
 }
 
 
@@ -304,6 +443,200 @@ FAIR_CLAUSES = {
             "fairness": 0.95,
         },
     ],
+
+    "saas": [
+        {
+            "title": "Service Availability",
+            "body": (
+                "The Provider commits to maintaining the platform with ninety-nine "
+                "percent (99%%) uptime, measured monthly.  Scheduled maintenance "
+                "windows of up to four (4) hours per month are excluded."
+            ),
+            "fairness": 0.91,
+        },
+        {
+            "title": "Data Ownership and Access",
+            "body": (
+                "The Customer retains full ownership of all data uploaded to the "
+                "platform.  The Customer may export or delete data at any time "
+                "subject to a thirty (30) day retention period for backup purposes."
+            ),
+            "fairness": 0.93,
+        },
+        {
+            "title": "Security Standards",
+            "body": (
+                "The Provider shall maintain SOC 2 Type II certification and "
+                "perform annual third-party security audits.  Results shall be "
+                "made available to the Customer upon request."
+            ),
+            "fairness": 0.94,
+        },
+        {
+            "title": "Acceptable Use Policy",
+            "body": (
+                "The Customer agrees not to use the service for unlawful purposes, "
+                "malware distribution, or to circumvent pricing tiers.  Violations "
+                "may result in account suspension with thirty (30) days' notice."
+            ),
+            "fairness": 0.89,
+        },
+        {
+            "title": "Billing and Invoicing",
+            "body": (
+                "Fees are charged monthly based on usage or fixed tier selection.  "
+                "Invoices are issued on the first day of each month and are due "
+                "within fifteen (15) days.  Price increases require sixty (60) days' notice."
+            ),
+            "fairness": 0.90,
+        },
+    ],
+
+    "ma": [
+        {
+            "title": "Representations and Warranties",
+            "body": (
+                "The Seller represents that it has full authority to enter into "
+                "this transaction, all financial statements are accurate and "
+                "complete, and there are no undisclosed liabilities."
+            ),
+            "fairness": 0.93,
+        },
+        {
+            "title": "Purchase Price and Adjustment",
+            "body": (
+                "The total purchase price is $[Amount], subject to post-closing "
+                "adjustment for working capital.  Any variance exceeding ten percent "
+                "(10%%) shall entitle either party to renegotiate the price within "
+                "ninety (90) days of closing."
+            ),
+            "fairness": 0.91,
+        },
+        {
+            "title": "Escrow and Holdback",
+            "body": (
+                "Twenty percent (20%%) of the purchase price shall be deposited "
+                "in escrow for eighteen (18) months to secure indemnification "
+                "obligations.  Remaining amounts shall be released upon expiration "
+                "of the indemnification period absent pending claims."
+            ),
+            "fairness": 0.92,
+        },
+        {
+            "title": "Due Diligence and Inspection",
+            "body": (
+                "The Buyer has the right to conduct reasonable due diligence for "
+                "a period of forty-five (45) days, including access to books, "
+                "records, and meetings with key personnel."
+            ),
+            "fairness": 0.94,
+        },
+        {
+            "title": "Transition Services",
+            "body": (
+                "The Seller shall provide transition support for sixty (60) days "
+                "post-closing at a mutually agreed hourly rate of $[Rate].  Extended "
+                "support is available at the same rate if agreed in writing."
+            ),
+            "fairness": 0.88,
+        },
+    ],
+
+    "ip_license": [
+        {
+            "title": "License Grant",
+            "body": (
+                "The Licensor grants a non-exclusive, royalty-free license to use "
+                "the intellectual property for the purposes specified in Exhibit A.  "
+                "The license may not be sublicensed or transferred without written consent."
+            ),
+            "fairness": 0.92,
+        },
+        {
+            "title": "Term and Renewal",
+            "body": (
+                "This license is granted for an initial term of three (3) years from "
+                "the effective date and shall automatically renew for successive one-year "
+                "periods unless either party provides ninety (90) days' prior notice."
+            ),
+            "fairness": 0.90,
+        },
+        {
+            "title": "Quality Control",
+            "body": (
+                "The Licensee shall maintain quality standards consistent with the "
+                "Licensor's brand guidelines, which shall be provided in writing.  "
+                "The Licensor may audit compliance with reasonable notice."
+            ),
+            "fairness": 0.88,
+        },
+        {
+            "title": "Royalty Payments",
+            "body": (
+                "The Licensee shall pay royalties equal to five percent (5%%) of "
+                "net sales, due within thirty (30) days of each quarter-end.  The "
+                "Licensor shall have the right to audit royalty records annually."
+            ),
+            "fairness": 0.91,
+        },
+        {
+            "title": "Improvements and Feedback",
+            "body": (
+                "Any improvements made by the Licensee to the licensed IP shall be "
+                "owned jointly.  The Licensee grants the Licensor a royalty-free "
+                "license to incorporate such improvements in future versions."
+            ),
+            "fairness": 0.89,
+        },
+    ],
+
+    "employment": [
+        {
+            "title": "Position and Duties",
+            "body": (
+                "The Employee shall be employed as [Job Title] with responsibilities "
+                "as described in the job specification.  Duties may be modified by "
+                "mutual agreement or with thirty (30) days' written notice."
+            ),
+            "fairness": 0.90,
+        },
+        {
+            "title": "Compensation and Benefits",
+            "body": (
+                "The Employee shall receive an annual salary of $[Amount] payable "
+                "bi-weekly, plus standard benefits including health insurance, "
+                "401(k) matching at six percent (6%%), and twenty (20) days PTO annually."
+            ),
+            "fairness": 0.92,
+        },
+        {
+            "title": "At-Will Employment",
+            "body": (
+                "Employment is at-will, meaning either party may terminate the "
+                "relationship at any time with two (2) weeks' written notice, except "
+                "in cases of termination for cause, which requires immediate severance."
+            ),
+            "fairness": 0.88,
+        },
+        {
+            "title": "Confidentiality and Trade Secrets",
+            "body": (
+                "The Employee shall maintain confidentiality of proprietary information "
+                "during and after employment for two (2) years.  This obligation does "
+                "not apply to information that becomes publicly available."
+            ),
+            "fairness": 0.91,
+        },
+        {
+            "title": "Workplace Conduct",
+            "body": (
+                "The Employee agrees to follow all company policies, report to the "
+                "designated manager, and maintain professional conduct at all times.  "
+                "Policy violations may result in disciplinary action up to termination."
+            ),
+            "fairness": 0.87,
+        },
+    ],
 }
 
 
@@ -318,4 +651,12 @@ TRAP_TITLES = {
     "ip_grab": "Intellectual Property",
     "unilateral_amendment": "Amendment",
     "forced_arbitration": "Dispute Resolution",
+    "data_monetization": "Data Rights",
+    "unilateral_price_increase": "Pricing",
+    "indemnity_overreach": "Indemnification",
+    "escrow_forfeiture": "Escrow Terms",
+    "license_clawback": "License Termination",
+    "field_of_use_restriction": "Field of Use",
+    "non_compete_employment": "Non-Compete",
+    "wage_clawback": "Compensation Clawback",
 }
